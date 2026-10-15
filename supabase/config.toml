@@ -1,0 +1,4 @@
+[functions.rls-gateway]
+# The gateway validates the user with Auth and the private teacher allowlist itself.
+# This also supports projects using new asymmetric JWT signing keys.
+verify_jwt = false
