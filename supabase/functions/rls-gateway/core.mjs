@@ -71,7 +71,8 @@ export function createHandler(env,fetcher=fetch){
       const canonical=resolvePath(path,await tree(ref));if(!canonical)return fail('Fichier introuvable.',404);
       const r=await raw(canonical,ref,range?{Range:range}:{}),ext=canonical.split('.').pop().toLowerCase();
       const h=new Headers({...cors,'Content-Type':TYPES[ext],'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer'});
-      for(const k of ['content-length','content-range','accept-ranges'])if(r.headers.has(k))h.set(k,r.headers.get(k));
+      for(const k of ['content-range','accept-ranges'])if(r.headers.has(k))h.set(k,r.headers.get(k));
+      if(!r.headers.has('content-encoding')&&r.headers.has('content-length'))h.set('content-length',r.headers.get('content-length'));
       if(u.searchParams.get('download')==='1'||['docx','xlsx','zip'].includes(ext))h.set('Content-Disposition',`attachment; filename*=UTF-8''${encodeURIComponent(path.split('/').pop())}`);
       return new Response(req.method==='HEAD'?null:r.body,{status:r.status,headers:h});
     }catch{return fail('Documents momentanément indisponibles. Vérifiez la publication du dépôt privé et la connexion serveur.',503);}
