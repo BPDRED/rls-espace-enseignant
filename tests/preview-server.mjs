@@ -14,7 +14,7 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,base),se
  if(u.pathname==='/__test/fail-next'){failNext=true;return send({ok:true})}
  if(u.pathname==='/__test/stats')return send((await db.query('select points,remark,version,(select count(*) from public.rls_student_events)::integer as events from public.rls_student_records')).rows);
  if(u.pathname.startsWith(prefix)){
-  const p=u.pathname.slice(prefix.length)||'index.html';if(p.includes('..'))return send({},400);const data=await readFile(p==='app.js'?temp+'/app.js':join('dist',p));return send(data,200,({'.html':'text/html','.js':'application/javascript','.mjs':'application/javascript','.css':'text/css'}[extname(p)]||'application/octet-stream'));
+  const p=u.pathname.slice(prefix.length)||'index.html';if(p.includes('..'))return send({},400);const data=await readFile(p==='app.js'?temp+'/app.js':join('dist',p));return send(data,200,({'.html':'text/html','.js':'application/javascript','.mjs':'application/javascript','.css':'text/css','.wasm':'application/wasm'}[extname(p)]||'application/octet-stream'));
  }
  if(req.headers.authorization!=='Bearer '+token)return send({error:'not authorized'},401);
  if(u.pathname==='/auth/v1/user')return send(authUser);

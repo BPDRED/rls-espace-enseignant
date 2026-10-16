@@ -21,7 +21,7 @@ self.addEventListener('fetch',e=>{
   try{
    const r=await fetch(target,{headers:h,cache:'no-store',signal:e.request.signal});const headers=new Headers(r.headers);headers.set('Cache-Control','no-store');headers.set('Referrer-Policy','no-referrer');headers.set('X-Frame-Options','SAMEORIGIN');headers.set('Content-Security-Policy',"frame-ancestors 'self'");headers.set('X-Robots-Tag','noindex, nofollow');
    // The Edge platform may force HTML to text/plain; trusted lesson files retain their MIME here.
-   if(r.ok){const ext=u.pathname.split('.').pop().toLowerCase(),types={html:'text/html; charset=utf-8',css:'text/css; charset=utf-8',js:'text/javascript; charset=utf-8',svg:'image/svg+xml'};if(types[ext])headers.set('Content-Type',types[ext]);}
+   if(r.ok){const ext=u.pathname.split('.').pop().toLowerCase(),types={html:'text/html; charset=utf-8',pdf:'application/pdf',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',css:'text/css; charset=utf-8',js:'text/javascript; charset=utf-8',svg:'image/svg+xml',txt:'text/plain; charset=utf-8',md:'text/plain; charset=utf-8',json:'application/json'};if(types[ext])headers.set('Content-Type',types[ext]);if(u.searchParams.get('download')!=='1')headers.set('Content-Disposition','inline');}
    return new Response(r.body,{status:r.status,statusText:r.statusText,headers});
   }catch{return new Response('Le document n’a pas pu être chargé. Vérifiez la connexion puis réessayez.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});}
  })());
