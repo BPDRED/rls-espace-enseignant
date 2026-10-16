@@ -2,7 +2,7 @@ import{test}from'node:test';import assert from'node:assert/strict';import{readFi
 test('PostgreSQL: access, atomic audit, retries and conflicting remarks',async()=>{
  const db=new PGlite();try{
  await db.exec(`create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz);create function auth.uid()returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;grant usage on schema auth to authenticated;`);
- for(const f of ['202610150001_teacher_records.sql','202610150002_owner_identity.sql'])await db.exec(await readFile('supabase/migrations/'+f,'utf8'));
+ for(const f of ['202610150001_teacher_records.sql','202610150002_owner_identity.sql','20261016071242_private_rpc_implementation.sql'])await db.exec(await readFile('supabase/migrations/'+f,'utf8'));
  const owner='10000000-0000-0000-0000-000000000001',other='10000000-0000-0000-0000-000000000002';
  await db.exec(`insert into rls_private.teacher_emails values('teacher@example.test');insert into auth.users values('${owner}','teacher@example.test',now()),('${other}','other@example.test',now());set role authenticated;set "request.jwt.claim.sub"='${owner}';`);
  const id='20000000-0000-0000-0000-000000000001';

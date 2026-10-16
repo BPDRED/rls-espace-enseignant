@@ -14,7 +14,7 @@ export function classesFromCatalog(catalog){
   const paths=catalog.files.filter(f=>f.path.toLowerCase().includes('/'+l+'/'+(subject==='maths'?'maths':'svt')+'/') && f.path.endsWith('.html') && !/activite.s?-exercices|Activites_et_Corriges/i.test(f.path));
   const lessons=[];
   for(const f of paths){
-   const name=f.path.split('/').pop(),number=Number(name.match(/(?:Leçon|Séance)_(\d+)/u)?.[1]);
+   const name=f.path.split('/').pop().normalize('NFC'),number=Number(name.match(/(?:Leçon|Séance)_(\d+)/u)?.[1]);
    if(!number)continue;
    let lesson=lessons.find(x=>x.number===number);
    const planned=subject==='maths'?sessions.filter(x=>x.ref.match(new RegExp('leçon '+number+'(?:[^0-9]|$)','i'))):sessions.filter(x=>Number(x.w)===number);

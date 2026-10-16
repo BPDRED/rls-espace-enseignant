@@ -12,4 +12,3 @@ const P = {
   cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', search:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/>'
 };
 export const ic = n => `<svg viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
-
